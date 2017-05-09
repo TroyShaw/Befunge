@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class BefungeLoader {
+	
 	public static char[][] loadProgramFromFile(String path) {
 	    char[][] program;
 		

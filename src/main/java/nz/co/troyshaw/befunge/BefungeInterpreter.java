@@ -32,15 +32,19 @@ public class BefungeInterpreter {
 		setDir(Dir.Right);
 	}
 	
-	public String execute() {
+	public BefungeResult execute() {
 		char c = getChar();
 		
-		while (c != '@') {
-			executeSingleCycle(c);
-			c = getChar();
+		try {
+			while (c != '@') {
+				executeSingleCycle(c);
+				c = getChar();
+			}
+		} catch (RuntimeException e) {
+			return new BefungeResult(stringbuffer.toString(), c, dx, dy);
 		}
 
-		return stringbuffer.toString();
+		return new BefungeResult(stringbuffer.toString());
 	}
 	
 	private void executeSingleCycle(char c) {
@@ -195,7 +199,7 @@ public class BefungeInterpreter {
 
 				break;
 			default:
-				throw new RuntimeException("Unknown command encountered: " + (char) c + ", at (" + dx + ", " + dy + ")");
+				throw new RuntimeException();
 			}
 		}
 		
@@ -224,6 +228,7 @@ public class BefungeInterpreter {
 	
 	private int getIntFromUser() {
 		System.out.println("Enter an integer then press enter");
+		
 		return scanner.nextInt();
 	}
 	

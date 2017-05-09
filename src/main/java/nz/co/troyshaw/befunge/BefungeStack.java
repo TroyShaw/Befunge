@@ -1,20 +1,15 @@
 package nz.co.troyshaw.befunge;
 
 public class BefungeStack {
-    final StringBuilder sb = new StringBuilder();
+	
+    private StringBuilder sb = new StringBuilder();
 
     public void push(char ch) {
         sb.append(ch);
     }
     
     public void push(int i) {
-    	char c = (char) i;
-    	
-    	if (c != i) {
-    		//System.out.println("Warning: tried to push an int to char-stack which would overflow: " + i);
-    	}
-    	
-    	push(c);
+    	push((char) i);
     }
 
     /**
