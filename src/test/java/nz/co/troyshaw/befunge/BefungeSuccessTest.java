@@ -18,6 +18,10 @@ public class BefungeSuccessTest extends TestCase {
 	}
 	
 	private String executeSuccess(String filename) {
-		return BefungeDriver.executeFromFile(filename).getResult();
+		BefungeResult result = BefungeDriver.executeFromFile(filename);
+		
+		Assert.assertFalse(result.wasError());
+		
+		return result.getResult();
 	}
 }

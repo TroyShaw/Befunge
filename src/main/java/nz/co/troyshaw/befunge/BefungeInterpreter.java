@@ -37,11 +37,12 @@ public class BefungeInterpreter {
 		
 		try {
 			while (c != '@') {
+				
 				executeSingleCycle(c);
 				c = getChar();
 			}
 		} catch (RuntimeException e) {
-			return new BefungeResult(stringbuffer.toString(), c, dx, dy);
+			return new BefungeResult(stringbuffer.toString(), c, getXCoord(), getYCoord());
 		}
 
 		return new BefungeResult(stringbuffer.toString());
@@ -208,10 +209,15 @@ public class BefungeInterpreter {
 	}
 	
 	private char getChar() {
-		int y = Math.abs(pcY % program.length);
-		int x = Math.abs(pcX % program[y].length);
-
-		return program[y][x];
+		return program[getYCoord()][getXCoord()];
+	}
+	
+	private int getXCoord() {
+		return Math.abs(pcX % program[getYCoord()].length);
+	}
+	
+	private int getYCoord() {
+		return Math.abs(pcY % program.length);
 	}
 	
 	private char getCharFromUser() {
