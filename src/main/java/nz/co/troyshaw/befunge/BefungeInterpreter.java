@@ -6,38 +6,38 @@ import java.util.Scanner;
 public class BefungeInterpreter {
 
 	private char[][] program;
-	
+
 	private int pcX, pcY;
 	private int dx, dy;
-	
+
 	private BefungeStack stack;
-	
+
 	private boolean stringMode;
-	
+
 	private Scanner scanner;
 	private Random random;
 
 	private StringBuffer stringbuffer;
-	
+
 	public BefungeInterpreter(char[][] program) {
 		this.program = program;
-		
+
 		stringbuffer = new StringBuffer();
-		
+
 		stack = new BefungeStack();
-		
+
 		scanner = new Scanner(System.in);
 		random = new Random();
 
 		setDir(Dir.Right);
 	}
-	
+
 	public BefungeResult execute() {
 		char c = getChar();
-		
+
 		try {
 			while (c != '@') {
-				
+
 				executeSingleCycle(c);
 				c = getChar();
 			}
@@ -47,12 +47,12 @@ public class BefungeInterpreter {
 
 		return new BefungeResult(stringbuffer.toString());
 	}
-	
+
 	private void executeSingleCycle(char c) {
 		int a, b;
-		
+
 		int x, y;
-		
+
 		if (stringMode) {
 			if (c == '"') stringMode = false;
 			else stack.push(c);
@@ -191,73 +191,82 @@ public class BefungeInterpreter {
 				stack.push(ch);
 
 				break;
-			case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
 				stack.push(c - '0');
 
 				break;
 			case ' ':
-				//space is a no-op
+				// space is a no-op
 
 				break;
 			default:
 				throw new RuntimeException();
 			}
 		}
-		
+
 		pcX += dx;
 		pcY += dy;
 	}
-	
+
 	private char getChar() {
 		return program[getYCoord()][getXCoord()];
 	}
-	
+
 	private int getXCoord() {
 		return Math.abs(pcX % program[getYCoord()].length);
 	}
-	
+
 	private int getYCoord() {
 		return Math.abs(pcY % program.length);
 	}
-	
+
 	private char getCharFromUser() {
 		System.out.println("Enter a single char then press enter");
 		String str = scanner.next();
-		
+
 		if (str.length() != 1) {
 			System.out.println("You fool. Enter a single character. You get 'x' because of this.");
 			return 'x';
 		}
-		
+
 		return str.charAt(0);
 	}
-	
+
 	private int getIntFromUser() {
 		System.out.println("Enter an integer then press enter");
-		
+
 		return scanner.nextInt();
 	}
-	
+
 	private void setRandDir() {
 		int r = random.nextInt(4);
 
 		setDir(Dir.values()[r]);
 	}
-	
+
 	private void setDir(Dir dir) {
 		dx = dir.dx;
 		dy = dir.dy;
 	}
-	
+
 	private enum Dir {
 		Up(0, -1),
 		Down(0, 1),
 		Left(-1, 0),
 		Right(1, 0);
-		
+
 		public final int dx;
 		public final int dy;
-		
+
 		Dir(int dx, int dy) {
 			this.dx = dx;
 			this.dy = dy;
